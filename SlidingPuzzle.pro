@@ -13,8 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        interfacejogo.cpp
+        interfacejogo.cpp \
+    jogo.cpp \
+    peca.cpp
 
-HEADERS  += interfacejogo.h
+HEADERS  += interfacejogo.h \
+    jogo.h \
+    peca.h
 
 FORMS    += interfacejogo.ui
