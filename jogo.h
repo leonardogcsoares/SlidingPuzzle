@@ -28,7 +28,7 @@ public:
     InterfaceJogo *interface;
     QSignalMapper *m;
 
-
+    void fill();
     void randomize();
     void setInterface(InterfaceJogo *interface);
     void setSignalMapper(QSignalMapper *m);

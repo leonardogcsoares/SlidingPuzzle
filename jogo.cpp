@@ -60,11 +60,11 @@ void Jogo::initMatrix() {
     }
     connect(m, SIGNAL(mapped(int)), this, SLOT(piecePushed(int)));
     std::cout << "Added pieces to grid" << std::endl;
-    this->randomize();
+    this->fill();
 }
 
-/** Método que randomiza os valores da matriz.*/
-void Jogo::randomize() {
+/** Método que preenche os valores da matriz.*/
+void Jogo::fill() {
 
     this-> moves = 0;
     srand(time(NULL));
@@ -93,42 +93,8 @@ void Jogo::randomize() {
         this->newGame();
 }
 
-/** Método que verifica se o puzzle tem solução. Retorna true em caso positivo e false em caso negativo.*/
-bool Jogo::checkSolvable() {
-    int inversions = 0;
-    int blankSpaceRow = 0;
-    QVector<int> integerVector;
-
-    for(int x=0;x<TAM; ++x){
-        for(int y=0;y<TAM;++y){
-            if (this->currentMatrix[x][y] == 0) {
-                blankSpaceRow = x+1;
-            }
-            integerVector.append(this->currentMatrix[x][y]);
-        }
-    }
-
-    for(int x=0;x<integerVector.length(); ++x){
-        for(int y=x+1;y<integerVector.length();++y){
-            if(integerVector[y] > integerVector[x]){
-                inversions++;
-            }
-        }
-    }
-
-    std::cout << blankSpaceRow << " " << inversions << std::endl;
-
-    return blankSpaceRow % 2 == 1 ? (inversions%2 == 1 ? false : true) : (inversions%2 == 1 ? true : false);
-}
-
-/** Método que cria um novo jogo.*/
-void Jogo::newGame() {
-    for (int x=0; x < 4; ++x) {
-        for (int y=0; y < 4; ++y) {
-            this->buttonMatrix[x][y]->changeText(currentMatrix[x][y]);
-        }
-    }
-
+/** Método que randomiza os valores da matriz.*/
+void Jogo::randomize() {
     int zPosx = 3, zPosy = 3;
     for (int a = 0; a < 10000; ++a) {
         int option = rand()%4;
@@ -149,6 +115,44 @@ void Jogo::newGame() {
         }
         piecePushed(zPosx * TAM + zPosy, true);
     }
+}
+
+///** Método que verifica se o puzzle tem solução. Retorna true em caso positivo e false em caso negativo.*/
+//bool Jogo::checkSolvable() {
+//    int inversions = 0;
+//    int blankSpaceRow = 0;
+//    QVector<int> integerVector;
+
+//    for(int x=0;x<TAM; ++x){
+//        for(int y=0;y<TAM;++y){
+//            if (this->currentMatrix[x][y] == 0) {
+//                blankSpaceRow = x+1;
+//            }
+//            integerVector.append(this->currentMatrix[x][y]);
+//        }
+//    }
+
+//    for(int x=0;x<integerVector.length(); ++x){
+//        for(int y=x+1;y<integerVector.length();++y){
+//            if(integerVector[y] > integerVector[x]){
+//                inversions++;
+//            }
+//        }
+//    }
+
+//    std::cout << blankSpaceRow << " " << inversions << std::endl;
+
+//    return blankSpaceRow % 2 == 1 ? (inversions%2 == 1 ? false : true) : (inversions%2 == 1 ? true : false);
+//}
+
+/** Método que cria um novo jogo.*/
+void Jogo::newGame() {
+    for (int x=0; x < 4; ++x) {
+        for (int y=0; y < 4; ++y) {
+            this->buttonMatrix[x][y]->changeText(currentMatrix[x][y]);
+        }
+    }
+    randomize();
 }
 
 /** Método move a peça quando clica nela.*/
@@ -211,7 +215,7 @@ void Jogo::piecePushed(int mapVal, bool randomizing) {
         if (this->isGameWon() && !randomizing) {
             delay();
             this->interface->gameWon(this->moves);
-            this->randomize();
+            this->fill();
         }
     }
 }
