@@ -71,22 +71,23 @@ void Jogo::randomize() {
 
     for (int x=0; x<TAM; ++x) {
         for (int y=0; y<TAM; ++y) {
-            this->currentMatrix[x][y] = TAM*x + y;
+            this->currentMatrix[x][y] = TAM*x + y + 1;
         }
     }
+    this->currentMatrix[3][3] = 0;
 
-    do {
-        for (int x=0; x<TAM; ++x) {
-            for (int y=0; y<TAM; ++y) {
-                int temp = this->currentMatrix[x][y];
-                int randomX = rand()%TAM;
-                int randomY = rand()%TAM;
+//    do {
+//        for (int x=0; x<TAM; ++x) {
+//            for (int y=0; y<TAM; ++y) {
+//                int temp = this->currentMatrix[x][y];
+//                int randomX = rand()%TAM;
+//                int randomY = rand()%TAM;
 
-                this->currentMatrix[x][y] = this->currentMatrix[randomX][randomY];
-                this->currentMatrix[randomX][randomY] = temp;
-            }
-        }
-    } while(!this->checkSolvable());
+//                this->currentMatrix[x][y] = this->currentMatrix[randomX][randomY];
+//                this->currentMatrix[randomX][randomY] = temp;
+//            }
+//        }
+//    } while(!this->checkSolvable());
 
         this->printMatrix();
         this->newGame();
@@ -127,13 +128,34 @@ void Jogo::newGame() {
             this->buttonMatrix[x][y]->changeText(currentMatrix[x][y]);
         }
     }
+
+    int zPosx = 3, zPosy = 3;
+    for (int a = 0; a < 10000; ++a) {
+        int option = rand()%4;
+        std::cout << zPosx * TAM + zPosy << " Option: " << option << std::endl;
+        switch (option) {
+        case 0:
+            if (zPosx != 0) zPosx = zPosx - 1;
+            break;
+        case 1:
+            if (zPosx != 3) zPosx = zPosx + 1;
+            break;
+        case 2:
+            if (zPosy != 0) zPosy = zPosy - 1;
+            break;
+        case 3:
+            if (zPosy != 3) zPosy = zPosy + 1;
+            break;
+        }
+        piecePushed(zPosx * TAM + zPosy, true);
+    }
 }
 
 /** Método move a peça quando clica nela.*/
-void Jogo::piecePushed(int mapVal) {
+void Jogo::piecePushed(int mapVal, bool randomizing) {
 
     Peca *piece = this->getPieceFromMap(mapVal);
-    std::cout << "Piece pushed: " << piece->getX() << ", " << piece->getY() << std::endl;
+    std::cout << "Piece pushed: " << piece->getX() << ", " << piece->getY() << ", MAP: " << mapVal << std::endl;
 
     int x = piece->getX();
     int y = piece->getY();
@@ -145,7 +167,7 @@ void Jogo::piecePushed(int mapVal) {
     // Check north
     if (x > 0) {
         checkPiece= this->buttonMatrix[x-1][y];
-        std::cout << "Check piece: " << checkPiece->getX() << ", " << checkPiece->getY() << std::endl;
+        std::cout << "NCheck piece: " << checkPiece->getX() << ", " << checkPiece->getY() << checkPiece->text().toStdString() << std::endl;
         if (checkPiece->text() == " ") {
             std::cout << "North empty" << std::endl;
             switchFound = true;
@@ -155,7 +177,7 @@ void Jogo::piecePushed(int mapVal) {
     }
     if (x < 3 && !switchFound) {
         checkPiece = this->buttonMatrix[x+1][y];
-        std::cout << "Check piece: " << checkPiece->getX() << ", " << checkPiece->getY() << std::endl;
+        std::cout << "SCheck piece: " << checkPiece->getX() << ", " << checkPiece->getY() << checkPiece->text().toStdString() << std::endl;
         if (checkPiece->text() == " ") {
             std::cout << "South empty" << std::endl;
             switchFound = true;
@@ -165,7 +187,7 @@ void Jogo::piecePushed(int mapVal) {
     // Check west
     if (y > 0 && !switchFound) {
         checkPiece = this->buttonMatrix[x][y-1];
-        std::cout << "Check piece: " << checkPiece->getX() << ", " << checkPiece->getY() << std::endl;
+        std::cout << "WCheck piece: " << checkPiece->getX() << ", " << checkPiece->getY() << checkPiece->text().toStdString() << std::endl;
         if (checkPiece->text() == " ") {
             std::cout << "West empty" << std::endl;
             switchFound = true;
@@ -175,7 +197,7 @@ void Jogo::piecePushed(int mapVal) {
     // Check east
     if (y < 3 && !switchFound) {
         checkPiece = this->buttonMatrix[x][y+1];
-        std::cout << "Check piece: " << checkPiece->getX() << ", " << checkPiece->getY() << std::endl;
+        std::cout << "ECheck piece: " << checkPiece->getX() << ", " << checkPiece->getY() << checkPiece->text().toStdString() << std::endl;
         if (checkPiece->text() == " ") {
             std::cout << "East empty" << std::endl;
             switchFound = true;
@@ -185,9 +207,8 @@ void Jogo::piecePushed(int mapVal) {
 
     if (switchFound) {
         interface->switchPieces(piece, pieceToSwitch);
-
         this->addMove();
-        if (this->isGameWon()) {
+        if (this->isGameWon() && !randomizing) {
             delay();
             this->interface->gameWon(this->moves);
             this->randomize();

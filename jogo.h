@@ -40,7 +40,7 @@ public:
 
 
 public slots:
-    void piecePushed(int mapVal);
+    void piecePushed(int mapVal, bool randomizing=false);
 
 private:
     int moves = 0;
