@@ -71,7 +71,7 @@ void Jogo::randomize() {
 
     for (int x=0; x<TAM; ++x) {
         for (int y=0; y<TAM; ++y) {
-            this->currentMatrix[x][y] = TAM*x+y;
+            this->currentMatrix[x][y] = TAM*x + y;
         }
     }
 
@@ -218,17 +218,15 @@ int Jogo::totalMoves() {
 
 /** Método que verifica se o jogo foi ganho.*/
 bool Jogo::isGameWon() {
-    int c = 1;
     for (int x=0; x < TAM; ++x) {
         for (int y=0; y < TAM; ++y) {
             if (x==3 && y==3){
                break;
             }
-            std::cout << "Desired: " << QString::number(c).toStdString() << " Button value: " << buttonMatrix[x][y]->text().toStdString() << std::endl;
-            if (QString::compare(QString::number(c),buttonMatrix[x][y]->text())) {
+            std::cout << "Desired: " << QString::number(TAM*x + y + 1).toStdString() << " Button value: " << buttonMatrix[x][y]->text().toStdString() << std::endl;
+            if (QString::compare(QString::number(TAM*x + y + 1),buttonMatrix[x][y]->text())) {
                 return false;
             }
-            ++c;
         }
     }
 
