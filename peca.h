@@ -6,6 +6,12 @@
 #include <QString>
 #include <QSizePolicy>
 
+/**
+ * ################# TRABALHO PRÁTICO 1 - PAC ####################
+ * ALUNOS: LUCAS GOULART GROSSI E LEONARDO GUALBERTO COELHO SOARES
+ * ###############################################################
+*/
+
 class Peca : public QPushButton
 {
 private:
@@ -18,6 +24,7 @@ public:
 
     Peca();
     Peca(int x, int y, int value);
+    void changeText(int newValue);
     void changeText(QString newValue);
     int getMapped();
     int getX();

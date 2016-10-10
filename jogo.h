@@ -8,6 +8,13 @@
 #include "peca.h"
 #include <QSignalMapper>
 
+#define TAM 4
+
+/**
+ * ################# TRABALHO PRÁTICO 1 - PAC ####################
+ * ALUNOS: LUCAS GOULART GROSSI E LEONARDO GUALBERTO COELHO SOARES
+ * ###############################################################
+*/
 
 class Jogo : public QObject
 {
@@ -15,9 +22,8 @@ class Jogo : public QObject
 public:
     explicit Jogo(QObject *parent = 0);
 
-
-    int currentMatrix[4][4];
-    Peca *buttonMatrix[4][4];
+    int currentMatrix[TAM][TAM];
+    Peca *buttonMatrix[TAM][TAM];
 
     InterfaceJogo *interface;
     QSignalMapper *m;
@@ -26,6 +32,7 @@ public:
     void randomize();
     void setInterface(InterfaceJogo *interface);
     void setSignalMapper(QSignalMapper *m);
+    void initMatrix();
     Peca* getPieceFromMap(int mapVal);
     bool isGameWon();
     int totalMoves();
@@ -38,6 +45,7 @@ public slots:
 private:
     int moves = 0;
 
+    bool checkSolvable();
     void printMatrix();
     void addMove();
 signals:

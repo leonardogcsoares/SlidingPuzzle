@@ -7,6 +7,14 @@
 #include <QSignalMapper>
 #include <QElapsedTimer>
 
+#define MAX_RECORDS 10
+
+/**
+ * ################# TRABALHO PRÁTICO 1 - PAC ####################
+ * ALUNOS: LUCAS GOULART GROSSI E LEONARDO GUALBERTO COELHO SOARES
+ * ###############################################################
+*/
+
 namespace Ui {
 class InterfaceJogo;
 }
@@ -23,7 +31,10 @@ public:
     void addPieceToGrid(Peca *piece, int x, int y);
     void switchPieces(Peca *p1, Peca *p2);
     void gameWon(int moves);
+    void save(int moves, int time);
+    void load();
 
+    int records[MAX_RECORDS][2];
     QSignalMapper *m;
     QElapsedTimer qTimer;
 

@@ -1,9 +1,15 @@
 #include "peca.h"
+#include <iostream>
+
+/**
+ * ################# TRABALHO PRÁTICO 1 - PAC ####################
+ * ALUNOS: LUCAS GOULART GROSSI E LEONARDO GUALBERTO COELHO SOARES
+ * ###############################################################
+*/
 
 Peca::Peca() {
 
 }
-
 
 Peca::Peca(int x, int y, int value)
 {
@@ -18,8 +24,11 @@ Peca::Peca(int x, int y, int value)
         this->setText(QString::number(value));
     }
 
-
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+}
+
+void Peca::changeText(int newValue) {
+    this->setText(newValue != 0 ? QString::number(newValue) : " ");
 }
 
 void Peca::changeText(QString newValue) {
