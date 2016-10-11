@@ -65,8 +65,6 @@ void Jogo::initMatrix() {
 
 /** Método que preenche os valores da matriz.*/
 void Jogo::fill() {
-
-    this-> moves = 0;
     srand(time(NULL));
 
     for (int x=0; x<TAM; ++x) {
@@ -115,6 +113,7 @@ void Jogo::randomize() {
         }
         piecePushed(zPosx * TAM + zPosy, true);
     }
+    this-> moves = 0;
 }
 
 ///** Método que verifica se o puzzle tem solução. Retorna true em caso positivo e false em caso negativo.*/
@@ -215,7 +214,7 @@ void Jogo::piecePushed(int mapVal, bool randomizing) {
         if (this->isGameWon() && !randomizing) {
             delay();
             this->interface->gameWon(this->moves);
-            this->fill();
+            this->randomize();
         }
     }
 }
@@ -268,6 +267,4 @@ void Jogo::printMatrix() {
         }
         std::cout << std::endl;
     }
-}
-
-
+}                                               
